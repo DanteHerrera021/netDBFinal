@@ -1,7 +1,10 @@
-﻿using System;
+﻿using NLog;
+using System.Linq;
+using FINAL.Model;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.Extensions.Configuration;
 
 namespace FINAL.Model
 {
@@ -9,6 +12,12 @@ namespace FINAL.Model
     {
         public NWContext()
         {
+        }
+
+        public void AddProduct(Product product)
+        {
+            this.Products.Add(product);
+            this.SaveChanges();
         }
 
         public NWContext(DbContextOptions<NWContext> options)
@@ -31,8 +40,10 @@ namespace FINAL.Model
         {
             if (!optionsBuilder.IsConfigured)
             {
-#warning To protect potentially sensitive information in your connection string, you should move it out of source code. You can avoid scaffolding the connection string by using the Name= syntax to read it from configuration - see https://go.microsoft.com/fwlink/?linkid=2131148. For more guidance on storing connection strings, see http://go.microsoft.com/fwlink/?LinkId=723263.
-                optionsBuilder.UseSqlServer("Server=bitsql.wctc.edu;Database=NWConsole_22_DLH;User ID=dherrera3;Password=000583533");
+                IConfiguration config = new ConfigurationBuilder()
+                    .AddJsonFile("appsettings.json", true, true)
+                    .Build();
+                optionsBuilder.UseSqlServer(@config["Northwind:ConnectionString"]);
             }
         }
 
