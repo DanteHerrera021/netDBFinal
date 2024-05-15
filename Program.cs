@@ -151,6 +151,134 @@ try
 
                 db.AddProduct(product);
             }
+            else if (choice == "2")
+            {
+
+                Product product;
+
+                var products = db.Products.OrderBy(p => p.ProductId);
+                foreach (var item in products)
+                {
+                    Console.WriteLine($"{item.ProductId}) {item.ProductName}");
+                }
+                bool isValid = false;
+                do
+                {
+                    Console.WriteLine("Please choose a product number.");
+                    string productId = Console.ReadLine();
+
+                    product = products.FirstOrDefault(p => p.ProductId == int.Parse(productId));
+
+                    if (int.TryParse(productId, out int productIdInt))
+                    {
+                        product = products.FirstOrDefault(p => p.ProductId == productIdInt);
+
+                        if (product == null)
+                        {
+                            Console.ForegroundColor = ConsoleColor.Red;
+                            Console.WriteLine("Not a valid product ID.");
+                            Console.ResetColor();
+                        }
+                        else
+                        {
+                            isValid = true;
+                        }
+                    }
+                    else
+                    {
+                        Console.ForegroundColor = ConsoleColor.Red;
+                        Console.WriteLine("Please enter a valid number.");
+                        Console.ResetColor();
+                    }
+                } while (!isValid);
+
+                Console.Clear();
+
+                Console.WriteLine("Choose an attribute to edit");
+                Console.WriteLine("1) Product Name");
+                Console.WriteLine("2) Quantity per unit");
+                Console.WriteLine("3) Unit price");
+                Console.WriteLine("4) Units in stock");
+                Console.WriteLine("5) Units on order");
+                Console.WriteLine("6) Reorder level");
+                Console.WriteLine("7) Change discontinued status");
+                Console.WriteLine($"   Current status: {product.Discontinued}");
+
+                string editChoice = Console.ReadLine();
+
+                switch (editChoice)
+                {
+                    case "1":
+                        Console.WriteLine("Enter new product name:");
+                        product.ProductName = Console.ReadLine();
+                        break;
+                    case "2":
+                        Console.WriteLine("Enter new quantity per unit:");
+                        product.QuantityPerUnit = Console.ReadLine();
+                        break;
+                    case "3":
+                        Console.WriteLine("Enter new unit price:");
+                        if (decimal.TryParse(Console.ReadLine(), out decimal unitPrice))
+                        {
+                            product.UnitPrice = unitPrice;
+                        }
+                        else
+                        {
+                            Console.WriteLine("Invalid input for unit price.");
+                        }
+                        break;
+                    case "4":
+                        Console.WriteLine("Enter new units in stock:");
+                        if (short.TryParse(Console.ReadLine(), out short unitsInStock))
+                        {
+                            product.UnitsInStock = unitsInStock;
+                        }
+                        else
+                        {
+                            Console.WriteLine("Invalid input for units in stock.");
+                        }
+                        break;
+                    case "5":
+                        Console.WriteLine("Enter new units on order:");
+                        if (short.TryParse(Console.ReadLine(), out short unitsOnOrder))
+                        {
+                            product.UnitsOnOrder = unitsOnOrder;
+                        }
+                        else
+                        {
+                            Console.WriteLine("Invalid input for units on order.");
+                        }
+                        break;
+                    case "6":
+                        Console.WriteLine("Enter new reorder level:");
+                        if (short.TryParse(Console.ReadLine(), out short reorderLevel))
+                        {
+                            product.ReorderLevel = reorderLevel;
+                        }
+                        else
+                        {
+                            Console.WriteLine("Invalid input for reorder level.");
+                        }
+                        break;
+                    case "7":
+                        Console.WriteLine("Change discontinued status (true/false):");
+                        if (bool.TryParse(Console.ReadLine(), out bool discontinued))
+                        {
+                            product.Discontinued = discontinued;
+                        }
+                        else
+                        {
+                            Console.WriteLine("Invalid input for discontinued status.");
+                        }
+                        break;
+                    default:
+                        Console.WriteLine("Invalid choice.");
+                        break;
+                }
+
+                db.SaveChanges();
+                logInfo($"{product} was successfully updated");
+            }
         }
         else if (choice == "2") // EDITING CATEGORIES (B)
         {
