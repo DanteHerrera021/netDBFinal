@@ -205,6 +205,7 @@ try
                 Console.WriteLine($"   Current status: {product.Discontinued}");
 
                 string editChoice = Console.ReadLine();
+                logInfo($"Option {choice} selected");
 
                 switch (editChoice)
                 {
@@ -278,6 +279,51 @@ try
 
                 db.SaveChanges();
                 logInfo($"{product} was successfully updated");
+            }
+            else if (choice == "3")
+            {
+
+                Console.WriteLine("Which products would you like to display");
+                Console.WriteLine("1) Active products");
+                Console.WriteLine("2) Discontinued products");
+                Console.WriteLine("3) All products");
+
+                choice = Console.ReadLine();
+                logInfo($"Option {choice} selected");
+
+                if (choice == "1")
+                {
+                    var products = db.Products.Where(p => p.Discontinued == false).OrderBy(p => p.ProductId);
+
+                    foreach (var item in products)
+                    {
+                        Console.WriteLine(item.ProductName);
+                    }
+                }
+                else if (choice == "2")
+                {
+                    var products = db.Products.Where(p => p.Discontinued == true).OrderBy(p => p.ProductId);
+
+                    foreach (var item in products)
+                    {
+                        Console.WriteLine(item.ProductName);
+                    }
+                }
+                else if (choice == "3")
+                {
+                    var products = db.Products.OrderBy(p => p.ProductId);
+
+                    foreach (var item in products)
+                    {
+                        Console.WriteLine(item.ProductName);
+                    }
+                }
+                else
+                {
+                    Console.ForegroundColor = ConsoleColor.Red;
+                    logger.Error("Invalid choice");
+                    Console.ResetColor();
+                }
             }
         }
         else if (choice == "2") // EDITING CATEGORIES (B)
