@@ -325,6 +325,56 @@ try
                     Console.ResetColor();
                 }
             }
+            else if (choice == "4")
+            {
+                Product product;
+
+                var products = db.Products.OrderBy(p => p.ProductId);
+                foreach (var item in products)
+                {
+                    Console.WriteLine($"{item.ProductId}) {item.ProductName}");
+                }
+                bool isValid = false;
+                do
+                {
+                    Console.WriteLine("Please choose a product number.");
+                    string productId = Console.ReadLine();
+
+                    product = products.FirstOrDefault(p => p.ProductId == int.Parse(productId));
+
+                    if (int.TryParse(productId, out int productIdInt))
+                    {
+                        product = products.FirstOrDefault(p => p.ProductId == productIdInt);
+
+                        if (product == null)
+                        {
+                            Console.ForegroundColor = ConsoleColor.Red;
+                            Console.WriteLine("Not a valid product ID.");
+                            Console.ResetColor();
+                        }
+                        else
+                        {
+                            isValid = true;
+                        }
+                    }
+                    else
+                    {
+                        Console.ForegroundColor = ConsoleColor.Red;
+                        Console.WriteLine("Please enter a valid number.");
+                        Console.ResetColor();
+                    }
+                } while (!isValid);
+
+                Console.WriteLine($"{product.ProductId}) {product.ProductName}");
+                Console.WriteLine($"{product.SupplierId}) {db.Suppliers.FirstOrDefault(s => s.SupplierId == product.SupplierId).CompanyName}");
+                Console.WriteLine($"{product.CategoryId}) {db.Categories.FirstOrDefault(c => c.CategoryId == product.CategoryId).CategoryName}");
+                Console.WriteLine($"Quantity per unit: {product.QuantityPerUnit}");
+                Console.WriteLine($"Unit Price: ${product.UnitPrice}");
+                Console.WriteLine($"Units in stock: {product.UnitsInStock}");
+                Console.WriteLine($"Units on order: {product.UnitsOnOrder}");
+                Console.WriteLine($"Reorder level: {product.ReorderLevel}");
+                Console.WriteLine($"Product discontinued: {product.Discontinued}");
+            }
         }
         else if (choice == "2") // EDITING CATEGORIES (B)
         {
