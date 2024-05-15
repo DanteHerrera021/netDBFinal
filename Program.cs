@@ -393,6 +393,8 @@ try
             Console.Clear();
 
             logInfo($"Option {choice} selected");
+
+            Console.WriteLine("Not attempted.");
         }
     } while (choice.ToLower() != "q");
 
