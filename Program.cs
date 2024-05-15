@@ -23,6 +23,11 @@ try
         if (choice == "1") // EDITING PRODUCTS (C)
         {
 
+            ConsoleColor origColor = Console.ForegroundColor;
+            Console.ForegroundColor = ConsoleColor.Red;
+            Console.WriteLine("EDITING PRODUCTS");
+            Console.ForegroundColor = origColor;
+
             Console.WriteLine("1) Add new record to products");
             Console.WriteLine("2) Edit a product");
             Console.WriteLine("3) Display products");
@@ -34,6 +39,12 @@ try
         }
         else if (choice == "2") // EDITING CATEGORIES (B)
         {
+
+            ConsoleColor origColor = Console.ForegroundColor;
+            Console.ForegroundColor = ConsoleColor.Red;
+            Console.WriteLine("EDITING CATEGORIES");
+            Console.ForegroundColor = origColor;
+
             Console.WriteLine("1) Add new record to categories");
             Console.WriteLine("2) Edit a category");
             Console.WriteLine("3) Display all categories");
