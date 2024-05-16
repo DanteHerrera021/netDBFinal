@@ -44,8 +44,9 @@ try
             {
                 Product product = new Product();
 
-                var productsById = db.Products.OrderBy(p => p.ProductId);
-                product.ProductId = productsById.Last().ProductId + 1;
+                // Attempted to assign a new ID but it threw an error
+                // var productsById = db.Products.OrderBy(p => p.ProductId);
+                // product.ProductId = productsById.Last().ProductId + 1;
 
                 Console.WriteLine("Enter the name of the product");
                 product.ProductName = Console.ReadLine();
@@ -150,6 +151,8 @@ try
                 product.Discontinued = Console.ReadLine().ToUpper() == "Y";
 
                 db.AddProduct(product);
+
+                logInfo($"{product.ProductName} was successfully added to the database");
             }
             else if (choice == "2")
             {
@@ -278,7 +281,7 @@ try
                 }
 
                 db.SaveChanges();
-                logInfo($"{product} was successfully updated");
+                logInfo($"{product.ProductName} was successfully updated");
             }
             else if (choice == "3")
             {
